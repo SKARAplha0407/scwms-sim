@@ -127,6 +127,38 @@ export const GuestSessionModel = {
     }
 };
 
+// Session
+export interface Session {
+    id?: number;
+    token: string;
+    role: string;
+    expires_at: Date;
+    created_at?: Date;
+}
+
+export const SessionModel = {
+    async create(data: Session) {
+        if (!pool) throw new Error('Database not connected');
+        const [result] = await pool.query<ResultSetHeader>(
+            'INSERT INTO sessions (token, role, expires_at) VALUES (?, ?, ?)',
+            [data.token, data.role, data.expires_at]
+        );
+        return { id: result.insertId, ...data };
+    },
+
+    async findByToken(token: string) {
+        if (!pool) throw new Error('Database not connected');
+        const [rows] = await pool.query<RowDataPacket[]>(
+            'SELECT * FROM sessions WHERE token = ?',
+            [token]
+        );
+        if (rows.length === 0) return null;
+        const session = rows[0] as Session;
+        if (new Date(session.expires_at) < new Date()) return null; // Expired
+        return session;
+    }
+};
+
 // CriticalEvent
 export interface CriticalEvent {
     id?: number;
@@ -135,6 +167,9 @@ export interface CriticalEvent {
     end_time?: Date | null;
     active?: boolean;
 }
+
+// Simple Mutex for CriticalEvent race condition
+let criticalEventLock = Promise.resolve();
 
 export const CriticalEventModel = {
     async findOne(filter: { active: boolean }) {
@@ -149,16 +184,20 @@ export const CriticalEventModel = {
 
     async setActive(name: string, active: boolean) {
         if (!pool) throw new Error('Database not connected');
-        // Deactivate all first if setting active
-        if (active) {
-            await pool.query('UPDATE critical_events SET active = FALSE');
-            // Insert or update
-            await pool.query(
-                'INSERT INTO critical_events (name, active, start_time) VALUES (?, TRUE, NOW())',
-                [name]
-            );
-        } else {
-            await pool.query('UPDATE critical_events SET active = FALSE WHERE active = TRUE');
-        }
+
+        // Use mutex to prevent race conditions (Vector 6)
+        await (criticalEventLock = criticalEventLock.then(async () => {
+            // Deactivate all first if setting active
+            if (active) {
+                await pool.query('UPDATE critical_events SET active = FALSE');
+                // Insert or update
+                await pool.query(
+                    'INSERT INTO critical_events (name, active, start_time) VALUES (?, TRUE, NOW())',
+                    [name]
+                );
+            } else {
+                await pool.query('UPDATE critical_events SET active = FALSE WHERE active = TRUE');
+            }
+        }).catch(e => console.error("Mutex error", e)));
     }
 };

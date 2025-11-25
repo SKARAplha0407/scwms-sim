@@ -13,10 +13,23 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Missing policy details' }, { status: 400 });
         }
 
+        // Vector 4 Fix: Payload Poisoning & Circular Reference Check
+        let configStr: string;
+        try {
+            // Check size roughly
+            const size = JSON.stringify(config).length;
+            if (size > 100000) { // 100KB limit
+                return NextResponse.json({ error: 'Policy config too large' }, { status: 413 });
+            }
+            configStr = JSON.stringify(config);
+        } catch (e) {
+            return NextResponse.json({ error: 'Invalid policy config (circular reference?)' }, { status: 400 });
+        }
+
         // 1. Save Policy
         const policy = await PolicyModel.create({
             name,
-            config_json: config,
+            config_json: config, // Model will stringify again, but we validated it
         });
 
         // 2. Create Audit Log

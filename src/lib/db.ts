@@ -13,12 +13,24 @@ interface MockConnection {
 }
 
 // In-memory storage
+// In-memory storage with capped limits to prevent DoS
+const MAX_STORE_ITEMS = 1000;
+
 const store = {
   telemetry: [] as any[],
   policies: [] as any[],
   audit_logs: [] as any[],
   guest_sessions: [] as any[],
   critical_events: [] as any[],
+  sessions: [] as any[], // [NEW] For Auth
+};
+
+// Helper to push with limit
+const pushToStore = (collection: any[], item: any) => {
+  collection.push(item);
+  if (collection.length > MAX_STORE_ITEMS) {
+    collection.shift(); // Remove oldest
+  }
 };
 
 // Helper to parse SQL and execute against store
@@ -44,6 +56,9 @@ const executeMockQuery = async <T = any>(sql: string, params: any[] = []): Promi
     if (normalizedSql.includes('from guest_sessions')) {
       return [store.guest_sessions, []] as [T, any];
     }
+    if (normalizedSql.includes('from sessions')) {
+      return [store.sessions, []] as [T, any];
+    }
     return [[], []] as [T, any];
   }
 
@@ -64,7 +79,7 @@ const executeMockQuery = async <T = any>(sql: string, params: any[] = []): Promi
         traffic_class: params[6] || 'Other',
         timestamp: new Date()
       };
-      store.telemetry.push(newItem);
+      pushToStore(store.telemetry, newItem);
       return [{ insertId: newItem.id, affectedRows: 1 }, []] as [T, any];
     }
 
@@ -76,7 +91,7 @@ const executeMockQuery = async <T = any>(sql: string, params: any[] = []): Promi
         details_json: params[2],
         timestamp: new Date()
       };
-      store.audit_logs.push(newItem);
+      pushToStore(store.audit_logs, newItem);
       return [{ insertId: newItem.id, affectedRows: 1 }, []] as [T, any];
     }
 
@@ -87,7 +102,7 @@ const executeMockQuery = async <T = any>(sql: string, params: any[] = []): Promi
         config_json: params[1],
         created_at: new Date()
       };
-      store.policies.push(newItem);
+      pushToStore(store.policies, newItem);
       return [{ insertId: newItem.id, affectedRows: 1 }, []] as [T, any];
     }
 
@@ -99,7 +114,7 @@ const executeMockQuery = async <T = any>(sql: string, params: any[] = []): Promi
         end_time: null,
         active: true
       };
-      store.critical_events.push(newItem);
+      pushToStore(store.critical_events, newItem);
       return [{ insertId: newItem.id, affectedRows: 1 }, []] as [T, any];
     }
 
@@ -110,7 +125,19 @@ const executeMockQuery = async <T = any>(sql: string, params: any[] = []): Promi
         expires_at: params[1],
         created_at: new Date()
       };
-      store.guest_sessions.push(newItem);
+      pushToStore(store.guest_sessions, newItem);
+      return [{ insertId: newItem.id, affectedRows: 1 }, []] as [T, any];
+    }
+
+    if (normalizedSql.includes('sessions')) {
+      const newItem = {
+        id: store.sessions.length + 1,
+        token: params[0],
+        role: params[1],
+        expires_at: params[2],
+        created_at: new Date()
+      };
+      pushToStore(store.sessions, newItem);
       return [{ insertId: newItem.id, affectedRows: 1 }, []] as [T, any];
     }
   }

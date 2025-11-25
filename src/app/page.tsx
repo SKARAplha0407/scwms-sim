@@ -15,31 +15,27 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const [shake, setShake] = useState(false);
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
-        // Simulate network delay
-        setTimeout(() => {
-            // Simple validation for simulation
-            // In a real app, we'd send all 3 to the backend
-            if (role === 'admin' && password === 'admin') {
-                login('admin');
-                router.push('/admin');
-            } else if (role === 'faculty' && password === 'faculty') {
-                login('faculty');
-                router.push('/faculty');
-            } else if (role === 'student' && password === 'student') {
-                login('student');
-                router.push('/student');
+        try {
+            const success = await login(role, password);
+            if (success) {
+                if (role === 'admin') router.push('/admin');
+                else if (role === 'faculty') router.push('/faculty');
+                else if (role === 'student') router.push('/student');
             } else {
                 setError('Invalid credentials. Please try again.');
                 setShake(true);
-                setLoading(false);
                 setTimeout(() => setShake(false), 400);
             }
-        }, 800);
+        } catch (err) {
+            setError('Login failed. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (

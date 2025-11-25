@@ -9,20 +9,23 @@ interface SessionTimerProps {
 
 export default function SessionTimer({ durationMs }: SessionTimerProps) {
     const [timeLeft, setTimeLeft] = useState(durationMs);
+    const [startTime] = useState(Date.now()); // Vector 7 Fix: Store start time
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1000) {
-                    clearInterval(interval);
-                    return 0;
-                }
-                return prev - 1000;
-            });
+            // Calculate actual time elapsed, not interval-based
+            const elapsed = Date.now() - startTime;
+            const remaining = Math.max(0, durationMs - elapsed);
+
+            setTimeLeft(remaining);
+
+            if (remaining === 0) {
+                clearInterval(interval);
+            }
         }, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [startTime, durationMs]);
 
     const formatTime = (ms: number) => {
         const totalSeconds = Math.floor(ms / 1000);

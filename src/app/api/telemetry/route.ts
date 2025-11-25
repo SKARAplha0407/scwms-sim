@@ -9,8 +9,16 @@ export async function POST(req: Request) {
         const data = await req.json();
 
         // Validate data (basic)
-        if (!data.device_id || !data.bandwidth_kbps) {
+        if (!data.device_id || data.bandwidth_kbps === undefined) {
             return NextResponse.json({ error: 'Invalid telemetry data' }, { status: 400 });
+        }
+
+        // Vector 4 Fix: Type Confusion
+        if (typeof data.bandwidth_kbps !== 'number' || isNaN(data.bandwidth_kbps)) {
+            return NextResponse.json({ error: 'bandwidth_kbps must be a number' }, { status: 400 });
+        }
+        if (data.active_connections && (typeof data.active_connections !== 'number' || isNaN(data.active_connections))) {
+            return NextResponse.json({ error: 'active_connections must be a number' }, { status: 400 });
         }
 
         // Store

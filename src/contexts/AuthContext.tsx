@@ -93,7 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         sessionStorage.removeItem(ROLE_KEY);
         setIsAuthenticated(false);
         setUserRole(null);
-        router.push('/');
+        router.replace('/'); // Use replace to prevent back-button cache
     };
 
     return (

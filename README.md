@@ -90,9 +90,9 @@ Data updates occur via:
 Administrators can configure network policies that affect traffic prioritization:
 
 **Available Policies:**
-- `EXAM_MODE`: 80% bandwidth to academic traffic, 10% video, 10% social
-- `ACADEMIC_HOURS`: 70% academic, 20% video, 10% social
-- `NORMAL`: 50% academic, 30% video, 20% social
+- `EXAM_MODE`:
+- `ACADEMIC_HOURS`: 
+- `NORMAL`:
 
 Each policy application:
 - Validates input size (100KB limit) and detects circular JSON references

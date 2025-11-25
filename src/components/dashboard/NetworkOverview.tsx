@@ -62,11 +62,11 @@ const INITIAL_STATS: Stats = {
 const INITIAL_TRAFFIC: TrafficDistribution[] = [
     { name: 'Academic', value: 12 },
     { name: 'Labs', value: 8 },
-    { name: 'GH', value: 6 },
-    { name: 'BH-1', value: 5 },
+    { name: 'GH', value: 7 },
+    { name: 'BH-1', value: 4 },
     { name: 'BH-2', value: 4 },
-    { name: 'BH-3', value: 3 },
-    { name: 'BH-4', value: 2 },
+    { name: 'BH-3', value: 4 },
+    { name: 'BH-4', value: 4 },
 ];
 
 export default function NetworkOverview() {
@@ -531,6 +531,11 @@ export default function NetworkOverview() {
                                             boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
                                         }}
                                         itemStyle={{ color: 'var(--color-text-primary)' }}
+                                        formatter={(value: number) => {
+                                            const total = trafficDistribution.reduce((sum, item) => sum + item.value, 0);
+                                            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
+                                            return `${value} (${percentage}%)`;
+                                        }}
                                     />
                                 </PieChart>
                             </ResponsiveContainer>
@@ -551,7 +556,13 @@ export default function NetworkOverview() {
                                     />
                                     <span className="text-sm text-text-secondary">
                                         {entry.name}
-                                        <span className="ml-1 text-text-tertiary">({entry.value})</span>
+                                        <span className="ml-1 text-text-tertiary">
+                                            ({entry.value} - {(() => {
+                                                const total = trafficDistribution.reduce((sum, item) => sum + item.value, 0);
+                                                const percentage = total > 0 ? ((entry.value / total) * 100).toFixed(1) : '0';
+                                                return `${percentage}%`;
+                                            })()})
+                                        </span>
                                     </span>
                                 </div>
                             ))}

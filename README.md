@@ -301,8 +301,8 @@ This project demonstrates:
 
 ## Project Information
 
-**Course:** Software Development Laboratory  
+**Course:** Software Development Lab
 **Submitted By:** Shreyas Kumar Rai  
 **Roll Number:** 23UCC601  
-**Institution:** [Institution Name]  
-**Academic Year:** 2024-2025
+**Institution:** LNMIIT Jaipur  
+**Academic Year:** 2025-2026

@@ -5,7 +5,7 @@ import { usePusher } from '@/hooks/usePusher';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Activity, Wifi, Zap } from 'lucide-react';
 
-const COLORS = ['#2563EB', '#10B981', '#F59E0B', '#64748B'];
+const COLORS = ['#2563EB', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#14B8A6', '#64748B'];
 
 // Define proper types for your data
 interface TelemetryItem {
@@ -60,10 +60,13 @@ const INITIAL_STATS: Stats = {
 };
 
 const INITIAL_TRAFFIC: TrafficDistribution[] = [
-    { name: 'Academic', value: 45 },
-    { name: 'Video', value: 30 },
-    { name: 'Social', value: 15 },
-    { name: 'Other', value: 10 },
+    { name: 'Academic', value: 12 },
+    { name: 'Labs', value: 8 },
+    { name: 'GH', value: 6 },
+    { name: 'BH-1', value: 5 },
+    { name: 'BH-2', value: 4 },
+    { name: 'BH-3', value: 3 },
+    { name: 'BH-4', value: 2 },
 ];
 
 export default function NetworkOverview() {
@@ -175,21 +178,26 @@ export default function NetworkOverview() {
                 });
 
                 // Update traffic distribution from latest readings
-                const counts: Record<string, number> = { academic: 0, video: 0, social: 0, other: 0 };
+                const counts: Record<string, number> = { academic: 0, labs: 0, gh: 0, bh1: 0, bh2: 0, bh3: 0, bh4: 0 };
                 latestReadings.forEach(d => {
-                    const trafficClass = d.traffic_class?.toLowerCase() || 'other';
-                    if (counts[trafficClass] !== undefined) {
-                        counts[trafficClass]++;
-                    } else {
-                        counts['other']++;
-                    }
+                    const trafficClass = d.traffic_class?.toLowerCase() || 'bh4';
+                    if (trafficClass === 'academic') counts.academic++;
+                    else if (trafficClass === 'labs') counts.labs++;
+                    else if (trafficClass === 'gh') counts.gh++;
+                    else if (trafficClass === 'bh-1' || trafficClass === 'bh1') counts.bh1++;
+                    else if (trafficClass === 'bh-2' || trafficClass === 'bh2') counts.bh2++;
+                    else if (trafficClass === 'bh-3' || trafficClass === 'bh3') counts.bh3++;
+                    else counts.bh4++;
                 });
 
                 setTrafficDistribution([
                     { name: 'Academic', value: counts.academic },
-                    { name: 'Video', value: counts.video },
-                    { name: 'Social', value: counts.social },
-                    { name: 'Other', value: counts.other },
+                    { name: 'Labs', value: counts.labs },
+                    { name: 'GH', value: counts.gh },
+                    { name: 'BH-1', value: counts.bh1 },
+                    { name: 'BH-2', value: counts.bh2 },
+                    { name: 'BH-3', value: counts.bh3 },
+                    { name: 'BH-4', value: counts.bh4 },
                 ]);
             }
         } catch (error) {
@@ -298,21 +306,26 @@ export default function NetworkOverview() {
             });
 
             // Update traffic distribution
-            const counts: Record<string, number> = { academic: 0, video: 0, social: 0, other: 0 };
+            const counts: Record<string, number> = { academic: 0, labs: 0, gh: 0, bh1: 0, bh2: 0, bh3: 0, bh4: 0 };
             updateData.forEach((d: any) => {
-                const trafficClass = d.traffic_class?.toLowerCase() || 'other';
-                if (counts[trafficClass] !== undefined) {
-                    counts[trafficClass]++;
-                } else {
-                    counts['other']++;
-                }
+                const trafficClass = d.traffic_class?.toLowerCase() || 'bh4';
+                if (trafficClass === 'academic') counts.academic++;
+                else if (trafficClass === 'labs') counts.labs++;
+                else if (trafficClass === 'gh') counts.gh++;
+                else if (trafficClass === 'bh-1' || trafficClass === 'bh1') counts.bh1++;
+                else if (trafficClass === 'bh-2' || trafficClass === 'bh2') counts.bh2++;
+                else if (trafficClass === 'bh-3' || trafficClass === 'bh3') counts.bh3++;
+                else counts.bh4++;
             });
 
             setTrafficDistribution([
                 { name: 'Academic', value: counts.academic },
-                { name: 'Video', value: counts.video },
-                { name: 'Social', value: counts.social },
-                { name: 'Other', value: counts.other },
+                { name: 'Labs', value: counts.labs },
+                { name: 'GH', value: counts.gh },
+                { name: 'BH-1', value: counts.bh1 },
+                { name: 'BH-2', value: counts.bh2 },
+                { name: 'BH-3', value: counts.bh3 },
+                { name: 'BH-4', value: counts.bh4 },
             ]);
         } catch (error) {
             console.error('Error processing Pusher update:', error);

@@ -58,19 +58,27 @@ export default function LoginPage() {
 
                     <form onSubmit={handleLogin} className="space-y-6 relative z-10">
                         <div className="space-y-2">
-                            <label className="block text-sm font-semibold text-text-secondary ml-1">Username</label>
+                            <label className="block text-sm font-semibold text-text-secondary ml-1">Select Portal</label>
                             <div className="relative group">
                                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-primary">
-                                    <User className="h-5 w-5 text-text-tertiary group-focus-within:text-primary transition-colors" />
+                                    <Shield className="h-5 w-5 text-text-tertiary group-focus-within:text-primary transition-colors" />
                                 </div>
-                                <input
-                                    type="text"
+                                <select
                                     required
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
-                                    className="input-modern pl-11 h-12 bg-surface/50 focus:bg-surface border-transparent focus:border-primary/30 shadow-sm"
-                                    placeholder="Enter your username"
-                                />
+                                    className="input-modern pl-11 h-12 bg-surface/50 focus:bg-surface border-transparent focus:border-primary/30 shadow-sm appearance-none w-full cursor-pointer"
+                                >
+                                    <option value="" disabled>Select your role</option>
+                                    <option value="admin">Admin Portal</option>
+                                    <option value="faculty">Faculty Portal</option>
+                                    <option value="student">Student Portal</option>
+                                </select>
+                                <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                    <svg className="h-4 w-4 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
 
@@ -110,30 +118,6 @@ export default function LoginPage() {
                             )}
                         </button>
                     </form>
-
-                    <div className="mt-8 pt-6 border-t border-divider">
-                        <p className="text-center text-xs font-bold text-text-secondary uppercase tracking-wider mb-4">Available Portals</p>
-                        <div className="grid grid-cols-3 gap-3">
-                            <div className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-surface-hover transition-all cursor-help group border border-transparent hover:border-border">
-                                <div className="p-2.5 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-200">
-                                    <Shield className="w-5 h-5" />
-                                </div>
-                                <span className="text-xs font-semibold text-text-secondary group-hover:text-text-primary">Admin</span>
-                            </div>
-                            <div className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-surface-hover transition-all cursor-help group border border-transparent hover:border-border">
-                                <div className="p-2.5 rounded-lg bg-info/10 text-info group-hover:bg-info group-hover:text-white transition-colors duration-200">
-                                    <BookOpen className="w-5 h-5" />
-                                </div>
-                                <span className="text-xs font-semibold text-text-secondary group-hover:text-text-primary">Faculty</span>
-                            </div>
-                            <div className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-surface-hover transition-all cursor-help group border border-transparent hover:border-border">
-                                <div className="p-2.5 rounded-lg bg-success/10 text-success group-hover:bg-success group-hover:text-white transition-colors duration-200">
-                                    <GraduationCap className="w-5 h-5" />
-                                </div>
-                                <span className="text-xs font-semibold text-text-secondary group-hover:text-text-primary">Student</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

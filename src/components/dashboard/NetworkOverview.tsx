@@ -506,48 +506,52 @@ export default function NetworkOverview() {
                         </div>
                     </div>
 
-                    <div className="h-[300px] w-full relative">
-                        {trafficDistribution.some(item => item.value > 0) ? (
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={trafficDistribution.filter(item => item.value > 0)}
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={60}
-                                        outerRadius={100}
-                                        paddingAngle={5}
-                                        dataKey="value"
-                                    >
-                                        {trafficDistribution.filter(item => item.value > 0).map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} strokeWidth={0} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip
-                                        contentStyle={{
-                                            backgroundColor: 'var(--color-surface)',
-                                            borderColor: 'var(--color-border)',
-                                            borderRadius: '8px',
-                                            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
-                                        }}
-                                        itemStyle={{ color: 'var(--color-text-primary)' }}
-                                        formatter={(value: number) => {
-                                            const total = trafficDistribution.reduce((sum, item) => sum + item.value, 0);
-                                            const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
-                                            return `${value} (${percentage}%)`;
-                                        }}
-                                    />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        ) : (
-                            <div className="flex flex-col items-center justify-center h-full text-text-tertiary">
-                                <Wifi className="w-8 h-8 mb-2 opacity-50" />
-                                <p className="text-sm">No active traffic</p>
-                            </div>
-                        )}
+                    <div className="h-[450px] w-full flex flex-col">
+                        {/* Pie Chart Container */}
+                        <div className="h-[320px] w-full">
+                            {trafficDistribution.some(item => item.value > 0) ? (
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={trafficDistribution.filter(item => item.value > 0)}
+                                            cx="50%"
+                                            cy="45%"
+                                            innerRadius={70}
+                                            outerRadius={120}
+                                            paddingAngle={5}
+                                            dataKey="value"
+                                        >
+                                            {trafficDistribution.filter(item => item.value > 0).map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} strokeWidth={0} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor: 'var(--color-surface)',
+                                                borderColor: 'var(--color-border)',
+                                                borderRadius: '8px',
+                                                boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                                            }}
+                                            itemStyle={{ color: 'var(--color-text-primary)' }}
+                                            formatter={(value: number) => {
+                                                const total = trafficDistribution.reduce((sum, item) => sum + item.value, 0);
+                                                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
+                                                return `${value} (${percentage}%)`;
+                                            }}
+                                        />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center h-full text-text-tertiary">
+                                    <Wifi className="w-8 h-8 mb-2 opacity-50" />
+                                    <p className="text-sm">No active traffic</p>
+                                </div>
+                            )}
+
+                        </div>
 
                         {/* Custom Legend */}
-                        <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-4 flex-wrap">
+                        <div className="flex justify-center gap-x-6 gap-y-2 flex-wrap mt-4 px-4">
                             {trafficDistribution.map((entry, index) => (
                                 <div key={entry.name} className="flex items-center gap-2">
                                     <div

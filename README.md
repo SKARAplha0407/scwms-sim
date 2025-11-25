@@ -253,7 +253,7 @@ The application is configured for serverless deployment on Vercel:
 4. Deploy
 
 **Production Checklist:**
-- Replace mock database with PostgreSQL/MongoDB
+- Replace mock database with PostgreSQL
 - Implement rate limiting
 - Add CSRF protection
 - Enable HTTPS enforcement

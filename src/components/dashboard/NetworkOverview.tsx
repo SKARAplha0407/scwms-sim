@@ -55,7 +55,7 @@ const generateDummyData = (): ChartData[] => {
 
 const INITIAL_STATS: Stats = {
     totalBandwidth: 187,
-    activeDevices: 24,
+    activeDevices: 1847,
     avgLatency: 18,
 };
 
@@ -232,7 +232,7 @@ export default function NetworkOverview() {
             // Update stats with variations
             setStats(prev => ({
                 totalBandwidth: newBandwidth,
-                activeDevices: Math.max(20, prev.activeDevices + Math.floor(Math.random() * 5) - 2), // Vary ±2
+                activeDevices: Math.max(1500, Math.min(2200, prev.activeDevices + Math.floor(Math.random() * 41) - 20)), // Vary ±20, range 1500-2200
                 avgLatency: Math.max(10, Math.min(30, prev.avgLatency + Math.floor(Math.random() * 7) - 3)), // Vary ±3
             }));
 

@@ -389,7 +389,7 @@ export default function NetworkOverview() {
                     </div>
                     <div className="flex items-baseline gap-2 mb-2">
                         <span className="text-3xl font-bold text-text-primary">
-                            {stats.activeDevices}
+                            {stats.activeDevices.toString().padStart(4, '0')}
                         </span>
                         <span className="text-sm font-medium text-text-secondary">devices</span>
                     </div>

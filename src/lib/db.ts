@@ -102,6 +102,17 @@ const executeMockQuery = async <T = any>(sql: string, params: any[] = []): Promi
       store.critical_events.push(newItem);
       return [{ insertId: newItem.id, affectedRows: 1 }, []] as [T, any];
     }
+
+    if (normalizedSql.includes('guest_sessions')) {
+      const newItem = {
+        id: store.guest_sessions.length + 1,
+        email: params[0],
+        expires_at: params[1],
+        created_at: new Date()
+      };
+      store.guest_sessions.push(newItem);
+      return [{ insertId: newItem.id, affectedRows: 1 }, []] as [T, any];
+    }
   }
 
   // UPDATE

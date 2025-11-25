@@ -10,6 +10,11 @@ export async function POST(req: Request) {
         const body = await req.json();
         const { deviceCount = 20 } = body;
 
+        // Vector 4 Fix: Validate deviceCount
+        if (typeof deviceCount !== 'number' || deviceCount < 1 || deviceCount > 1000) {
+            return NextResponse.json({ success: false, error: 'Invalid deviceCount' }, { status: 400 });
+        }
+
         const state = await getSimulationState();
         const telemetryBatch = [];
 
@@ -20,10 +25,14 @@ export async function POST(req: Request) {
             const mainUrl = data.sample_urls[0] || 'google.com';
             const trafficClass = classifyTraffic(mainUrl, 'student');
 
+            // Vector 5 Fix: Ensure bandwidth is a number
+            const bandwidth = typeof data.bandwidth_kbps === 'number' ? data.bandwidth_kbps : 0;
+            const connections = typeof data.active_connections === 'number' ? data.active_connections : 0;
+
             telemetryBatch.push({
                 device_id: data.device_id,
-                bandwidth_kbps: data.bandwidth_kbps,
-                active_connections: data.active_connections,
+                bandwidth_kbps: bandwidth,
+                active_connections: connections,
                 sample_urls: data.sample_urls,
                 cpu: data.cpu,
                 memory: data.memory,

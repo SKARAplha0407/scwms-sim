@@ -84,8 +84,12 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             {/* Main Content Wrapper */}
             <div
                 className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ease-in-out
-                    ${sidebarOpen ? 'lg:ml-[260px]' : 'lg:ml-[72px]'}
+                    ${sidebarOpen ? 'ml-[260px]' : 'ml-[72px]'}
                 `}
+                style={{
+                    // Vector 9 Fix: Force margin on all screen sizes when sidebar is open
+                    marginLeft: sidebarOpen ? '260px' : '72px'
+                }}
             >
                 {/* Top Header */}
                 <header className="h-16 sticky top-0 z-40 bg-surface/80 backdrop-blur-md border-b border-border px-4 flex items-center justify-between">

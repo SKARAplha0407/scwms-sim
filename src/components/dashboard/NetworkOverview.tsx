@@ -351,6 +351,19 @@ export default function NetworkOverview() {
 
     return (
         <div className="space-y-6">
+            {/* Vector 10 Fix: Simulation Mode Warning */}
+            {isSimulating && (
+                <div className="bg-warning/10 border border-warning/30 rounded-xl p-4 flex items-center gap-3">
+                    <div className="w-2 h-2 rounded-full bg-warning animate-pulse"></div>
+                    <div>
+                        <p className="text-sm font-semibold text-warning">Simulation Mode Active</p>
+                        <p className="text-xs text-text-secondary mt-1">
+                            Displaying simulated data. Real telemetry stream is unavailable.
+                        </p>
+                    </div>
+                </div>
+            )}
+
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Total Bandwidth */}

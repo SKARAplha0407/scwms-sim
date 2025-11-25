@@ -187,6 +187,7 @@ export const CriticalEventModel = {
 
         // Use mutex to prevent race conditions (Vector 6)
         await (criticalEventLock = criticalEventLock.then(async () => {
+            if (!pool) return; // Guard against null in mutex
             // Deactivate all first if setting active
             if (active) {
                 await pool.query('UPDATE critical_events SET active = FALSE');

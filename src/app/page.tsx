@@ -8,6 +8,7 @@ import { Lock, User, Shield, GraduationCap, BookOpen, Activity, AlertCircle } fr
 export default function LoginPage() {
     const router = useRouter();
     const { login } = useAuth();
+    const [role, setRole] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -21,13 +22,15 @@ export default function LoginPage() {
 
         // Simulate network delay
         setTimeout(() => {
-            if (username === 'admin' && password === 'admin') {
+            // Simple validation for simulation
+            // In a real app, we'd send all 3 to the backend
+            if (role === 'admin' && password === 'admin') {
                 login('admin');
                 router.push('/admin');
-            } else if (username === 'faculty' && password === 'faculty') {
+            } else if (role === 'faculty' && password === 'faculty') {
                 login('faculty');
                 router.push('/faculty');
-            } else if (username === 'student' && password === 'student') {
+            } else if (role === 'student' && password === 'student') {
                 login('student');
                 router.push('/student');
             } else {
@@ -57,6 +60,31 @@ export default function LoginPage() {
                     <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
 
                     <form onSubmit={handleLogin} className="space-y-6 relative z-10">
+                        <div className="space-y-2">
+                            <label className="block text-sm font-semibold text-text-secondary ml-1">User Type</label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-primary">
+                                    <Shield className="h-5 w-5 text-text-tertiary group-focus-within:text-primary transition-colors" />
+                                </div>
+                                <select
+                                    required
+                                    value={role}
+                                    onChange={(e) => setRole(e.target.value)}
+                                    className="input-modern pl-11 h-12 bg-surface/50 focus:bg-surface border-transparent focus:border-primary/30 shadow-sm appearance-none w-full cursor-pointer"
+                                >
+                                    <option value="" disabled>Select User Type</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="faculty">Faculty</option>
+                                    <option value="student">Student</option>
+                                </select>
+                                <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                    <svg className="h-4 w-4 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="space-y-2">
                             <label className="block text-sm font-semibold text-text-secondary ml-1">Username</label>
                             <div className="relative group">

@@ -168,11 +168,15 @@ describe('SanchaarGrid Comprehensive Testing Strategy', () => {
         test('User can select portal, enter credentials, and login', async () => {
             render(<LoginPage />);
 
-            // 1. Enter Username (Admin)
-            const usernameInput = screen.getByPlaceholderText('Enter your username');
-            fireEvent.change(usernameInput, { target: { value: 'admin' } });
+            // 1. Select User Type (Admin)
+            const roleSelect = screen.getByRole('combobox');
+            fireEvent.change(roleSelect, { target: { value: 'admin' } });
 
-            // 2. Enter Password
+            // 2. Enter Username
+            const usernameInput = screen.getByPlaceholderText('Enter your username');
+            fireEvent.change(usernameInput, { target: { value: 'admin_user' } });
+
+            // 3. Enter Password
             const passwordInput = screen.getByPlaceholderText('Enter your password');
             fireEvent.change(passwordInput, { target: { value: 'admin' } });
 

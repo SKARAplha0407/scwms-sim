@@ -51,15 +51,16 @@ export default function LoginPage() {
                         <Activity className="w-10 h-10 text-white" />
                     </div>
                     <h1 className="text-4xl font-bold text-text-primary tracking-tight mb-2">SanchaarGrid</h1>
-                    <p className="text-text-secondary text-lg">Smart Campus WiFi Management</p>
+                    <p className="text-text-secondary text-lg">Smart Campus WiFi Management System</p>
                 </div>
 
                 {/* Login Card */}
-                <div className={`glass rounded-3xl p-8 sm:p-10 animate-in zoom-in-95 duration-500 delay-150 relative overflow-hidden ${shake ? 'animate-shake' : ''}`}>
+                <div className={`glass rounded-3xl p-8 sm:p-10 animate-in zoom-in-95 duration-500 delay-150 relative ${shake ? 'animate-shake' : ''}`}>
                     {/* Decorative gradient blob inside card */}
                     <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
 
                     <form onSubmit={handleLogin} className="space-y-6 relative z-10">
+                        {/* 1. User Type Selection */}
                         <div className="space-y-2">
                             <label className="block text-sm font-semibold text-text-secondary ml-1">User Type</label>
                             <div className="relative group">
@@ -70,7 +71,7 @@ export default function LoginPage() {
                                     required
                                     value={role}
                                     onChange={(e) => setRole(e.target.value)}
-                                    className="input-modern pl-11 h-12 bg-surface/50 focus:bg-surface border-transparent focus:border-primary/30 shadow-sm appearance-none w-full cursor-pointer"
+                                    className="input-modern pl-11 h-12 bg-surface/50 focus:bg-surface border-transparent focus:border-primary/30 shadow-sm appearance-none w-full cursor-pointer text-text-primary"
                                 >
                                     <option value="" disabled>Select User Type</option>
                                     <option value="admin">Admin</option>
@@ -85,6 +86,7 @@ export default function LoginPage() {
                             </div>
                         </div>
 
+                        {/* 2. Username Input */}
                         <div className="space-y-2">
                             <label className="block text-sm font-semibold text-text-secondary ml-1">Username</label>
                             <div className="relative group">
@@ -96,12 +98,13 @@ export default function LoginPage() {
                                     required
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
-                                    className="input-modern pl-11 h-12 bg-surface/50 focus:bg-surface border-transparent focus:border-primary/30 shadow-sm"
+                                    className="input-modern pl-11 h-12 bg-surface/50 focus:bg-surface border-transparent focus:border-primary/30 shadow-sm text-text-primary"
                                     placeholder="Enter your username"
                                 />
                             </div>
                         </div>
 
+                        {/* 3. Password Input */}
                         <div className="space-y-2">
                             <label className="block text-sm font-semibold text-text-secondary ml-1">Password</label>
                             <div className="relative group">
@@ -113,7 +116,7 @@ export default function LoginPage() {
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="input-modern pl-11 h-12 bg-surface/50 focus:bg-surface border-transparent focus:border-primary/30 shadow-sm"
+                                    className="input-modern pl-11 h-12 bg-surface/50 focus:bg-surface border-transparent focus:border-primary/30 shadow-sm text-text-primary"
                                     placeholder="Enter your password"
                                 />
                             </div>

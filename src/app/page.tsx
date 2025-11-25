@@ -58,27 +58,19 @@ export default function LoginPage() {
 
                     <form onSubmit={handleLogin} className="space-y-6 relative z-10">
                         <div className="space-y-2">
-                            <label className="block text-sm font-semibold text-text-secondary ml-1">Select Portal</label>
+                            <label className="block text-sm font-semibold text-text-secondary ml-1">Username</label>
                             <div className="relative group">
                                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-primary">
-                                    <Shield className="h-5 w-5 text-text-tertiary group-focus-within:text-primary transition-colors" />
+                                    <User className="h-5 w-5 text-text-tertiary group-focus-within:text-primary transition-colors" />
                                 </div>
-                                <select
+                                <input
+                                    type="text"
                                     required
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
-                                    className="input-modern pl-11 h-12 bg-surface/50 focus:bg-surface border-transparent focus:border-primary/30 shadow-sm appearance-none w-full cursor-pointer"
-                                >
-                                    <option value="" disabled>Select your role</option>
-                                    <option value="admin">Admin Portal</option>
-                                    <option value="faculty">Faculty Portal</option>
-                                    <option value="student">Student Portal</option>
-                                </select>
-                                <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                                    <svg className="h-4 w-4 text-text-tertiary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                                    </svg>
-                                </div>
+                                    className="input-modern pl-11 h-12 bg-surface/50 focus:bg-surface border-transparent focus:border-primary/30 shadow-sm"
+                                    placeholder="Enter your username"
+                                />
                             </div>
                         </div>
 

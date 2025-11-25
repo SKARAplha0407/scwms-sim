@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import { Lock, User, Shield, GraduationCap, BookOpen, Activity, AlertCircle } from 'lucide-react';
 
 export default function LoginPage() {
     const router = useRouter();
+    const { login } = useAuth();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -20,10 +22,13 @@ export default function LoginPage() {
         // Simulate network delay
         setTimeout(() => {
             if (username === 'admin' && password === 'admin') {
+                login('admin');
                 router.push('/admin');
             } else if (username === 'faculty' && password === 'faculty') {
+                login('faculty');
                 router.push('/faculty');
             } else if (username === 'student' && password === 'student') {
+                login('student');
                 router.push('/student');
             } else {
                 setError('Invalid credentials. Please try again.');
